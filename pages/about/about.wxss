@@ -1,0 +1,20 @@
+/* pages/about/about.wxss */
+
+.line {
+  margin: 0 auto;
+  width: 400rpx;
+  height: 4rpx;
+  background-color: #d8d8d8;
+  line-height: 10rpx;
+}
+.btn {
+  width: 88%;
+  margin-top: 20rpx;
+  background-color: #ffa07a;
+  color: #191970;
+  border-radius: 100rpx;
+}
+
+.imgview{
+  margin-top: 20rpx;
+}

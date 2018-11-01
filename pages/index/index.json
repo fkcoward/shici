@@ -1,0 +1,10 @@
+{
+  "enablePullDownRefresh":true,
+  
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "诗词",
+    "backgroundColor": "#eeeeee",
+    "backgroundTextStyle": "light"
+  
+}

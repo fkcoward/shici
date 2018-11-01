@@ -1,0 +1,21 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    </block>
+  </view>
+  <view class='title'><text class='titletext'>{{title}}</text></view>
+  <view class='dynasty'><text class='dynastytext'>{{dynasty}}·{{author}}</text></view>
+  <view class='line'></view>
+  <view wx:for="{{content}}" wx:for-item="vo" class='contents'><text>{{vo}}</text></view>
+
+  <view class='line'></view>
+  <view wx:for="{{translate}}" wx:for-item="vo" class='translates'><text>{{vo}}</text></view>
+  <view class='line' wx:if='{{lineHidden}}'></view>
+  <view class='btns'>
+  <button class='btn' bindtap='tiaozhuan'>关于作者</button>
+  </view>
+
+</view>

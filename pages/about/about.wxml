@@ -1,0 +1,8 @@
+<!--pages/about/about.wxml-->
+<view class='container'>
+  <view><text class='myinfo'>{{myinfos}}</text></view>
+  <view class='line'></view>
+  <view class='imgview'><image src="{{imgsrc}}" mode="aspectFit"></image></view>
+  <view class='line'></view>
+   <button class='btn' bindtap='tiaozhuan'>返回</button>
+</view>
