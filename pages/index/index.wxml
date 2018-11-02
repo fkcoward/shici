@@ -7,7 +7,7 @@
     </block>
   </view>
   <view class='title'><text class='titletext'>{{title}}</text></view>
-  <view class='dynasty'><text class='dynastytext'>{{dynasty}}·{{author}}</text></view>
+  <view class='dynasty'><text class='dynastytext'>{{dynasty}} · {{author}}</text></view>
   <view class='line'></view>
   <view wx:for="{{content}}" wx:for-item="vo" class='contents'><text>{{vo}}</text></view>
 

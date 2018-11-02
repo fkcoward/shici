@@ -5,13 +5,14 @@ const jinrishici = require('../../utils/jinrishici.js')
 Page({
   data: {
     title: '',
-    dynasty:'',
-    author:'',
-    content:[],
-    translate:[],
+    dynasty: '',
+    author: '',
+    content: [],
+    translate: [],
     userInfo: {},
     hasUserInfo: false,
-    lineHidden:false,
+    lineHidden: false,
+    result: '',
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   //事件处理函数
@@ -20,15 +21,35 @@ Page({
       url: '../logs/logs'
     })
   },
-  onLoad: function () {
-    this.getShici();
+  onLoad: function(query) {
+    var that=this
+    console.log(query)
+    if (query != null && query != undefined && JSON.stringify(query) !== '{}') {
+      const db = wx.cloud.database()
+      db.collection('shicicontent').where({
+        title: query.title
+      }).get({
+        success: function(res) {
+          console.log(res.data)
+          that.setThisData(res.data[0].content.data)
+        },
+        fail:function(){
+          that.getShici()
+        }
+      })
+    } else {
+      this.getShici();
+    }
+
+
+
 
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
-    } else if (this.data.canIUse){
+    } else if (this.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
@@ -50,7 +71,7 @@ Page({
       })
     }
   },
-  onPullDownRefresh:function(){
+  onPullDownRefresh: function() {
     this.getShici();
     wx.stopPullDownRefresh();
   },
@@ -62,39 +83,63 @@ Page({
       hasUserInfo: true
     })
   },
-  getShici:function(){
+  getShici: function() {
+    var that=this
     jinrishici.load(result => {
       // 下面是处理逻辑示例
       console.log(result)
+      this.setData({
+        "result": result
+      });
       if (result.status == "success") {
-        var setdata = {
-          "title": result.data.origin.title,
-          "dynasty": result.data.origin.dynasty,
-          "author": result.data.origin.author,
-          "content": result.data.origin.content
-        }
-        if (result.data.origin.translate != null) {
-          setdata["lineHidden"]=true;
-          console.log(result.data.origin.translate);
-          setdata["translate"] = result.data.origin.translate;
-        }
-        console.log(setdata)
-        this.setData(setdata);
+        that.setThisData(result.data)
       } else {
         console.log('fail');
       }
       //this.setData({ "jinrishici": result.data.origin.content })
     })
   },
-  tiaozhuan:function(){
+  tiaozhuan: function() {
     wx.navigateTo({
       url: '../about/about'
     })
   },
-  onShareAppMessage:function(){
+  onShareAppMessage: function() {
+    console.log(this.data.result);
+    var title = this.data.title
+    this.getShareData(this.data.result, title)
     return {
-      title:"读读诗词吧，哈哈哈",
-      path:'pages/index/index'
+      title: "向您分享一首《" + title + "》",
+      path: 'pages/index/index?title=' + title
     }
+
+  },
+  getShareData: function(data, title) {
+    const db = wx.cloud.database()
+    db.collection('shicicontent').add({
+      data: {
+        title: title,
+        content: data
+      },
+      success: function(res) {
+        return res;
+      },
+      fail: console.error
+    })
+  },
+  setThisData:function(data){
+    var setdata = {
+      "title": data.origin.title,
+      "dynasty": data.origin.dynasty,
+      "author": data.origin.author,
+      "content": data.origin.content
+    }
+    if (data.origin.translate != null) {
+      setdata["lineHidden"] = true;
+      console.log(data.origin.translate);
+      setdata["translate"] = data.origin.translate;
+    }
+    console.log(setdata)
+    this.setData(setdata);
   }
 })
