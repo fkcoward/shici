@@ -1,0 +1,45 @@
+/* pages/share/share.wxss */
+
+.hang {
+  width: 710rpx;
+  background-color: rgb(239, 241, 241);
+  border-radius: 20rpx;
+  margin-bottom: 10rpx;
+  margin-top: 10rpx;
+}
+
+.title {
+  width: 710rpx;
+  border: 0rpx solid #000;
+  font-size: 40rpx;
+  float: left;
+  text-align: left;
+  margin-left: 15rpx;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+
+.time {
+  width: 450rpx;
+  border: 0rpx solid #000;
+  float: right;
+  font-size: 20rpx;
+  color: rgb(95, 167, 122);
+  text-align: right;
+  margin-right: 10rpx;
+}
+
+.btns {
+  width: 100%;
+  margin-bottom: 30rpx;
+  line-height: 10rpx;
+}
+
+.btn {
+  width: 88%;
+  margin-top: 20rpx;
+  background-color: #ffa07a;
+  color: #191970;
+  border-radius: 100rpx;
+}

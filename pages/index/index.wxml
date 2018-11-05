@@ -15,7 +15,8 @@
   <view wx:for="{{translate}}" wx:for-item="vo" class='translates'><text>{{vo}}</text></view>
   <view class='line' wx:if='{{lineHidden}}'></view>
   <view class='btns'>
-  <button class='btn' bindtap='tiaozhuan'>关于作者</button>
+  <button class='btnshare' bindtap='tiaozhuan'>我的分享</button>
+  <button class='btnme' bindtap='tiaozhuanzz'>关于作者</button>
   </view>
 
 </view>

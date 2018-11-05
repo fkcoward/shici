@@ -23,7 +23,7 @@ Page({
   },
   onLoad: function(query) {
     var that=this
-    console.log(query)
+    
     if (query != null && query != undefined && JSON.stringify(query) !== '{}') {
       const db = wx.cloud.database()
       db.collection('shicicontent').where({
@@ -31,12 +31,14 @@ Page({
       }).get({
         success: function(res) {
           console.log(res.data)
-          that.setThisData(res.data[0].content.data)
+          that.setThisData(res.data[0].content)
+          
         },
         fail:function(){
           that.getShici()
         }
       })
+      this.saveReadInfo(query);
     } else {
       this.getShici();
     }
@@ -71,12 +73,35 @@ Page({
       })
     }
   },
+  onReady:function(){
+    try {
+      var know = wx.getStorageSync('iknow')
+      if (!know) {
+
+        wx.showModal({
+          title: '欢迎',
+          content: '诗词界面下拉可以刷新下一首，分享给好友可以查看到分享记录。',
+          confirmText: "知道了",
+          showCancel: false,
+          success: () => {
+            console.log('know')
+            wx.setStorage({
+              key: "iknow",
+              data: true
+            })
+          }
+        })
+      }
+    } catch (e) {
+      // Do something when catch error
+    }
+  },
   onPullDownRefresh: function() {
     this.getShici();
     wx.stopPullDownRefresh();
   },
   getUserInfo: function(e) {
-    console.log(e)
+    //console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
@@ -87,59 +112,91 @@ Page({
     var that=this
     jinrishici.load(result => {
       // 下面是处理逻辑示例
-      console.log(result)
+      //console.log(result)
       this.setData({
         "result": result
       });
       if (result.status == "success") {
-        that.setThisData(result.data)
+        that.setThisData(result.data.origin)
       } else {
         console.log('fail');
       }
-      //this.setData({ "jinrishici": result.data.origin.content })
     })
   },
   tiaozhuan: function() {
+    wx.navigateTo({
+      url: '../share/share'
+    })
+  },
+  tiaozhuanzz: function () {
     wx.navigateTo({
       url: '../about/about'
     })
   },
   onShareAppMessage: function() {
-    console.log(this.data.result);
+    //console.log(this.data.userInfo);
     var title = this.data.title
-    this.getShareData(this.data.result, title)
+    var timestamp=new Date().getTime();
+    this.getShareData(this.data.result, title,timestamp)
     return {
       title: "向您分享一首《" + title + "》",
-      path: 'pages/index/index?title=' + title
+      path: 'pages/index/index?title=' + title+'&timestamp='+timestamp
     }
 
   },
-  getShareData: function(data, title) {
-    const db = wx.cloud.database()
-    db.collection('shicicontent').add({
+  getShareData: function (data, title, timestamp) {
+    
+    var avatarUrl ="https://7368-shici-52bb90-1257955384.tcb.qcloud.la/微信图片_20181104121235.jpg?sign=9595ff30448ae5dda66829f3396aa116&t=1541304772";
+    if(this.data.hasUserInfo){
+      avatarUrl = this.data.userInfo.avatarUrl;
+    }
+    wx.cloud.callFunction({
+      // 云函数名称
+      name: 'saveShici',
+      // 传给云函数的参数
       data: {
         title: title,
-        content: data
+        content: data.data.origin,
+        timestamp: timestamp,
+        fromuserimg:avatarUrl
       },
-      success: function(res) {
-        return res;
+      success: (res) => {
+        console.log(res)
       },
       fail: console.error
     })
   },
   setThisData:function(data){
+    console.log(data)
     var setdata = {
-      "title": data.origin.title,
-      "dynasty": data.origin.dynasty,
-      "author": data.origin.author,
-      "content": data.origin.content
+      "title": data.title,
+      "dynasty": data.dynasty,
+      "author": data.author,
+      "content": data.content,
+      "translate":"",
+      "lineHidden":false
     }
-    if (data.origin.translate != null) {
+    if (data.translate != null) {
       setdata["lineHidden"] = true;
-      console.log(data.origin.translate);
-      setdata["translate"] = data.origin.translate;
+      console.log(data.translate);
+      setdata["translate"] = data.translate;
     }
-    console.log(setdata)
     this.setData(setdata);
+  },
+  saveReadInfo:function(query){
+   
+    wx.cloud.callFunction({
+      // 云函数名称
+      name: 'saveRead',
+      // 传给云函数的参数
+      data: {
+        title: query.title,
+        timestamp: query.timestamp
+      },
+      success: (res) => {
+        console.log(res)
+      },
+      fail: console.error
+    })
   }
 })

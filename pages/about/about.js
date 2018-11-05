@@ -77,7 +77,7 @@ Page({
    */
   onShareAppMessage: function() {
     return {
-      title: "读读诗词吧，哈哈哈",
+      title: "邀请您阅读诗词",
       path: 'pages/index/index'
     }
   },

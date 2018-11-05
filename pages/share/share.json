@@ -1,0 +1,8 @@
+{
+    "enablePullDownRefresh": true,
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "分享记录",
+    "backgroundColor": "#eeeeee",
+    "backgroundTextStyle": "light"
+}

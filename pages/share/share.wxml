@@ -1,0 +1,3 @@
+<view class="container">
+<view wx:for="{{sclist}}" wx:for-item="vo" class='hang'><text class='title'>{{vo.title}}</text><text class='time'>{{vo.timestamp}}</text></view>
+</view>
