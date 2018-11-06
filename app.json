@@ -2,9 +2,11 @@
   "pages": [
     "pages/index/index",
     "pages/about/about",
-    "pages/share/share"
+    "pages/share/share",
+    "pages/detail/detail"
   ],
   "window": {
+    "navigationStyle": "custom",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",

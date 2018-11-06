@@ -1,6 +1,5 @@
 {
-  "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTextStyle": "black",
-  "navigationBarTitleText": "关于作者",
-  "backgroundTextStyle": "light"
+  "usingComponents": {
+    "nav-bar": "/commpents/navbar/index"
+  }
 }

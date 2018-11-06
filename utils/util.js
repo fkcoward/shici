@@ -14,7 +14,24 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const getShiciByTitle=title=>{
+  wx.cloud.callFunction({
+    // 云函数名称
+    name: 'getByTitle',
+    // 传给云函数的参数
+    data: {
+      title: title
+    },
+    success: (res) => {
+      console.log(res);
+    },
+    fail: console.error
+  })
+}
+
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  getShiciByTitle: getShiciByTitle
 }
 

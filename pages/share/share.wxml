@@ -1,3 +1,4 @@
-<view class="container">
-<view wx:for="{{sclist}}" wx:for-item="vo" class='hang'><text class='title'>{{vo.title}}</text><text class='time'>{{vo.timestamp}}</text></view>
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class="container" >
+<view wx:for="{{sclist}}" wx:for-item="vo" bindtap='myclick' data-title='{{vo.title}}' class='hang'><text class='title'>{{vo.title}}</text><text class='time'>{{vo.timestamp}}</text></view>
 </view>

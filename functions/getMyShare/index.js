@@ -6,7 +6,7 @@ const db = cloud.database()
 // 云函数入口函数
 exports.main = async (event, context) => {
   var fromuseropenid = event.userInfo.openId;
-  return await db.collection('shareinfo').where({ fromuseropenid: fromuseropenid }).orderBy('timestamp','desc').field({
+  return await db.collection('shareandlike').where({ fromuseropenid: fromuseropenid }).orderBy('timestamp','desc').field({
     timestamp:true,
     title:true
   }).get()

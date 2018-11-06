@@ -11,13 +11,14 @@
 .title {
   width: 710rpx;
   border: 0rpx solid #000;
-  font-size: 40rpx;
+  font-size: 36rpx;
   float: left;
   text-align: left;
   margin-left: 15rpx;
   white-space:nowrap;
   overflow:hidden;
   text-overflow: ellipsis;
+  padding:2rpx 2rpx 0rpx 2rpx;
 }
 
 .time {
@@ -28,6 +29,10 @@
   color: rgb(95, 167, 122);
   text-align: right;
   margin-right: 10rpx;
+  padding-right:10rpx;
+  height:50rpx;
+
+
 }
 
 .btns {

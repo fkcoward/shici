@@ -13,28 +13,31 @@ Page({
     hasUserInfo: false,
     lineHidden: false,
     result: '',
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
-  },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
+    donghua:"none",
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    likeImgSrc: './../../image/like2.png',
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标
+      title: '诗词', //导航栏 中间的标题
+      back_pre: false,
+      showAboutme: true
+    },
+    height: app.globalData.height * 2 + 20
   },
   onLoad: function(query) {
-    var that=this
-    
+    var that = this
+
     if (query != null && query != undefined && JSON.stringify(query) !== '{}') {
       const db = wx.cloud.database()
       db.collection('shicicontent').where({
-        title: query.title
+        _id: query.title
       }).get({
         success: function(res) {
           console.log(res.data)
           that.setThisData(res.data[0].content)
-          
+
         },
-        fail:function(){
+        fail: function() {
           that.getShici()
         }
       })
@@ -73,14 +76,14 @@ Page({
       })
     }
   },
-  onReady:function(){
+  onReady: function() {
     try {
       var know = wx.getStorageSync('iknow')
       if (!know) {
 
         wx.showModal({
           title: '欢迎',
-          content: '诗词界面下拉可以刷新下一首，分享给好友可以查看到分享记录。',
+          content: '诗词界面下拉阅读下一首，标注收藏或分享给好友可以保存到收藏记录，点击右上角图标可以查看开发者信息。',
           confirmText: "知道了",
           showCancel: false,
           success: () => {
@@ -97,6 +100,8 @@ Page({
     }
   },
   onPullDownRefresh: function() {
+    console.log('下拉刷新');
+    this.doNotLike();
     this.getShici();
     wx.stopPullDownRefresh();
   },
@@ -109,7 +114,7 @@ Page({
     })
   },
   getShici: function() {
-    var that=this
+    var that = this
     jinrishici.load(result => {
       // 下面是处理逻辑示例
       //console.log(result)
@@ -123,58 +128,103 @@ Page({
       }
     })
   },
-  tiaozhuan: function() {
+  listShare: function() {
     wx.navigateTo({
       url: '../share/share'
     })
   },
-  tiaozhuanzz: function () {
-    wx.navigateTo({
-      url: '../about/about'
+  like: function() {
+    if (this.data.likeImgSrc === './../../image/like2.png') {
+      console.log("这是to like")
+      this.setData({
+        "donghua":"myfirst"
+      });
+      var timestamp = new Date().getTime();
+      this.getShareData(this.data.result,this.data.title, timestamp, 1);
+      // console.log(this.data.result)
+
+    } else {
+      console.log('to not like')
+      this.setData({
+        "donghua": "myfirst"
+      });
+      this.deleteLikeData(this.data.title, 0);
+
+    }
+  },
+  doLike: function() {
+    this.setData({
+      "likeImgSrc": './../../image/like1.png',
+      "donghua":"none"
+    })
+  },
+  doNotLike: function() {
+    this.setData({
+      "likeImgSrc": './../../image/like2.png',
+      "donghua":"none"
     })
   },
   onShareAppMessage: function() {
     //console.log(this.data.userInfo);
     var title = this.data.title
-    var timestamp=new Date().getTime();
-    this.getShareData(this.data.result, title,timestamp)
+    var timestamp = new Date().getTime();
+    this.getShareData(this.data.result,title, timestamp, 2)
     return {
       title: "向您分享一首《" + title + "》",
-      path: 'pages/index/index?title=' + title+'&timestamp='+timestamp
+      path: 'pages/index/index?title=' + title + '&timestamp=' + timestamp
     }
 
   },
-  getShareData: function (data, title, timestamp) {
-    
-    var avatarUrl ="https://7368-shici-52bb90-1257955384.tcb.qcloud.la/微信图片_20181104121235.jpg?sign=9595ff30448ae5dda66829f3396aa116&t=1541304772";
-    if(this.data.hasUserInfo){
-      avatarUrl = this.data.userInfo.avatarUrl;
-    }
+  deleteLikeData: function(title, sflag) {
+    console.log(title+sflag+'==============');
+    var that = this;
+    wx.cloud.callFunction({
+      // 云函数名称
+      name: 'deleteLike',
+      // 传给云函数的参数
+      data: {
+        title: title,
+        sflag: sflag
+      },
+      success: (res) => {
+        if (res.result.ret === true) {
+          that.doNotLike()
+        }
+      },
+      fail: console.error
+    })
+  },
+  getShareData: function(data,title, timestamp, sflag) {
+    //sflag 2是分享 1 是喜欢
+    var that = this
     wx.cloud.callFunction({
       // 云函数名称
       name: 'saveShici',
       // 传给云函数的参数
       data: {
         title: title,
-        content: data.data.origin,
         timestamp: timestamp,
-        fromuserimg:avatarUrl
+        content: data.data.origin,
+        sflag: sflag
       },
       success: (res) => {
         console.log(res)
+        if (res.result.ret === true) {
+          that.doLike()
+        }
       },
       fail: console.error
     })
   },
-  setThisData:function(data){
+  setThisData: function(data) {
     console.log(data)
     var setdata = {
       "title": data.title,
       "dynasty": data.dynasty,
       "author": data.author,
       "content": data.content,
-      "translate":"",
-      "lineHidden":false
+      "translate": "",
+      "lineHidden": false
     }
     if (data.translate != null) {
       setdata["lineHidden"] = true;
@@ -183,8 +233,8 @@ Page({
     }
     this.setData(setdata);
   },
-  saveReadInfo:function(query){
-   
+  saveReadInfo: function(query) {
+
     wx.cloud.callFunction({
       // 云函数名称
       name: 'saveRead',

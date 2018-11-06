@@ -6,13 +6,20 @@ Page({
    */
   data: {
     myinfos: "",
-    imgsrc: ""
+    imgsrc: "",
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标
+      title: '关于我', //导航栏 中间的标题
+      back_pre: true,
+      showAboutme: false
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    
   },
 
   /**

@@ -1,4 +1,4 @@
-<!--pages/about/about.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class='container'>
   <view><text class='myinfo'>{{myinfos}}</text></view>
   <view class='line'></view>

@@ -1,12 +1,6 @@
 <!--index.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-    </block>
-  </view>
   <view class='title'>
     <text class='titletext'>{{title}}</text>
   </view>
@@ -27,8 +21,8 @@
     <button class='like' bindtap='like' style='animation-name:{{donghua}};-webkit-animation-name:{{donghua}};'>
       <image style="width: 50px; height: 50px;" src='{{likeImgSrc}}'></image>
     </button>
-    <button class='listShare' bindtap='listShare'>
-      <image style="width: 50px; height: 50px;" src='./../../image/listShare.png'></image>
+    <button class='listShare' bindtap='back2'>
+      <image style="width: 50px; height: 50px;" src='./../../image/back2.png'></image>
     </button>
   </view>
 

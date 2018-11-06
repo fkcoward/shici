@@ -1,10 +1,6 @@
 {
-  "enablePullDownRefresh":true,
-  
-    "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "诗词",
-    "backgroundColor": "#eeeeee",
-    "backgroundTextStyle": "light"
-  
+  "usingComponents": {
+    "nav-bar": "/commpents/navbar/index"
+  },
+  "enablePullDownRefresh":true
 }

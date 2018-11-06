@@ -1,0 +1,14 @@
+<view class='nav-wrap' style='height: {{height*2 + 20}}px;'>
+  <view class='nav-title' style='line-height: {{height*2 + 44}}px;'>{{navbarData.title}}</view>
+  <view style='display: flex; justify-content: space-around;flex-direction: column'>
+    <view class='nav-capsule' style='height: {{height*2 + 44}}px;' wx:if='{{navbarData.showCapsule}}'>
+      <view bindtap='_navback' wx:if='{{navbarData.back_pre}}'>
+        <image src='/image/back.png' mode='aspectFill' class='back-pre'></image>
+      </view>
+      <view class='navbar-v-line' wx:if='{{navbarData.back_pre && navbarData.showAboutme}}'></view>
+      <view bindtap='_gotoMe' wx:if='{{navbarData.showAboutme}}'>
+        <image src='/image/aboutme.png' mode='aspectFill' class='back-home'></image>
+      </view>
+    </view>
+  </view>
+</view>

@@ -5,7 +5,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    sclist:[]
+    sclist:[],
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标
+      title: '收藏分享', //导航栏 中间的标题
+      back_pre: true,
+      showAboutme: true
+    }
   },
 
   /**
@@ -101,5 +107,11 @@ Page({
     var m = date.getMinutes() + ':';
     var s = date.getSeconds();
     return Y + M + D + h + m + s;
+  },
+  myclick:function(events){
+    console.log(events.currentTarget.dataset);
+    wx.navigateTo({
+      url: '../detail/detail?title='+events.currentTarget.dataset.title
+    })
   }
 })
